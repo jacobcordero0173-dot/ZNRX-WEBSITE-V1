@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Vnrl Tweaks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --bg: #ffffff;
+  --ink: #0a0a0a;
+  --mid: #888888;
+  --faint: #eeeeee;
+  --hairline: #d8d8d8;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  overflow-x: hidden;
+}
+
+/* grain overlay */
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 999;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: 62px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 52px;
+  background: rgba(255,255,255,0.94);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--hairline);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 21px; letter-spacing: 7px;
+  color: var(--ink); text-decoration: none;
+}
+.nav-links { display: flex; gap: 36px; list-style: none; }
+.nav-links a {
+  font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--mid); text-decoration: none; transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--ink); }
+.nav-btn {
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--bg); background: var(--ink);
+  padding: 11px 24px; text-decoration: none;
+  border: 1px solid var(--ink); transition: all 0.2s;
+}
+.nav-btn:hover { background: var(--bg); color: var(--ink); }
+
+/* ── HERO ── */
+#hero {
+  display: grid; grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  padding-top: 62px;
+  border-bottom: 1px solid var(--hairline);
+}
+.hero-l {
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 72px 52px;
+  border-right: 1px solid var(--hairline);
+}
+.hero-tag {
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--mid); margin-bottom: 36px;
+  padding-top: 16px; border-top: 1px solid var(--hairline);
+  display: inline-block;
+}
+.hero-h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(96px, 13vw, 200px);
+  line-height: 0.86; letter-spacing: -3px;
+}
+.hero-ital {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: clamp(17px, 2.2vw, 28px);
+  color: var(--mid); margin-top: 30px; line-height: 1.6;
+}
+.hero-rule { width: 44px; height: 1px; background: var(--ink); margin: 30px 0; }
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.btn-dark {
+  background: var(--ink); color: var(--bg);
+  padding: 14px 34px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; font-weight: 700; letter-spacing: 2.5px;
+  text-transform: uppercase; text-decoration: none;
+  border: 1px solid var(--ink); transition: all 0.2s; display: inline-block;
+}
+.btn-dark:hover { background: var(--bg); color: var(--ink); }
+.btn-light {
+  background: transparent; color: var(--ink);
+  padding: 14px 34px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; letter-spacing: 2.5px;
+  text-transform: uppercase; text-decoration: none;
+  border: 1px solid var(--hairline); transition: all 0.2s; display: inline-block;
+}
+.btn-light:hover { border-color: var(--ink); }
+
+.hero-r {
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: 72px 52px;
+}
+.hero-r-top {
+  font-size: 10px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--mid);
+}
+.stats-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--hairline); gap: 0;
+  background: var(--hairline);
+}
+.stat-cell {
+  background: var(--bg); padding: 34px 30px;
+}
+.stat-big {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 54px; line-height: 1;
+}
+.stat-sm {
+  font-size: 9px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--mid); margin-top: 6px;
+}
+
+/* ── MARQUEE ── */
+.mq-wrap {
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+  padding: 18px 0; overflow: hidden; background: var(--bg);
+}
+.mq-track {
+  display: flex; white-space: nowrap;
+  animation: mq 20s linear infinite;
+}
+.mq-track span {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px; letter-spacing: 6px;
+  color: var(--mid); padding: 0 36px;
+}
+.mq-track .dot { color: var(--hairline); padding: 0; }
+@keyframes mq {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── SECTION ── */
+.sec { max-width: 1200px; margin: 0 auto; padding: 100px 52px; }
+.sec-tag { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--mid); margin-bottom: 18px; }
+.sec-h { font-family: 'Bebas Neue', sans-serif; font-size: clamp(46px, 7vw, 88px); letter-spacing: 1px; line-height: 0.94; margin-bottom: 18px; }
+.sec-p { font-size: 12px; color: var(--mid); line-height: 1.95; max-width: 440px; }
+.divider { height: 1px; background: var(--hairline); }
+
+/* ── PRODUCTS ── */
+.prod-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 56px; flex-wrap: wrap; gap: 24px; }
+.prod-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--hairline);
+}
+.pcard {
+  padding: 44px 34px; border-right: 1px solid var(--hairline);
+  display: flex; flex-direction: column; position: relative;
+  transition: background 0.28s;
+}
+.pcard:last-child { border-right: none; }
+.pcard:hover { background: var(--ink); }
+.pcard:hover .pc-tier,
+.pcard:hover .pc-name,
+.pcard:hover .pc-price,
+.pcard:hover .pf-item,
+.pcard:hover .pf-ck,
+.pcard:hover .pc-num { color: rgba(255,255,255,0.12); }
+.pcard:hover .pf-item { border-color: rgba(255,255,255,0.08); color: rgba(255,255,255,0.45); }
+.pcard:hover .pf-ck { color: rgba(255,255,255,0.9); }
+.pcard:hover .pc-name,
+.pcard:hover .pc-price { color: #fff; }
+.pcard:hover .pc-tier { color: rgba(255,255,255,0.35); }
+.pcard:hover .pbtn { background: #fff; color: var(--ink); border-color: #fff; }
+
+.pc-num {
+  position: absolute; top: 18px; right: 22px;
+  font-family: 'Bebas Neue', sans-serif; font-size: 84px;
+  color: var(--faint); line-height: 1;
+  pointer-events: none; transition: color 0.28s;
+}
+.pc-tier {
+  font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--mid); margin-bottom: 28px; transition: color 0.28s;
+}
+.pc-name {
+  font-family: 'Bebas Neue', sans-serif; font-size: 28px;
+  letter-spacing: 2px; line-height: 1; margin-bottom: 10px;
+  transition: color 0.28s;
+}
+.pc-price {
+  font-family: 'Bebas Neue', sans-serif; font-size: 50px;
+  line-height: 1; margin-bottom: 32px; transition: color 0.28s;
+}
+.pf-list { list-style: none; flex: 1; margin-bottom: 32px; }
+.pf-item {
+  display: flex; align-items: flex-start; gap: 9px;
+  font-size: 11px; color: var(--mid);
+  padding: 8px 0; border-bottom: 1px solid var(--hairline);
+  transition: color 0.28s, border-color 0.28s; line-height: 1.4;
+}
+.pf-ck { color: var(--ink); font-size: 10px; flex-shrink: 0; transition: color 0.28s; }
+.pbtn {
+  display: block; text-align: center; padding: 13px;
+  font-family: 'Space Mono', monospace; font-size: 9px;
+  font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  text-decoration: none; border: 1px solid var(--hairline);
+  color: var(--ink); background: transparent; transition: all 0.22s; cursor: pointer;
+}
+.pbtn:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+.prod-note {
+  text-align: center; margin-top: 28px;
+  font-size: 11px; color: var(--mid); letter-spacing: 0.5px;
+}
+.prod-note a {
+  color: var(--ink); text-decoration: none;
+  border-bottom: 1px solid var(--hairline); transition: border-color 0.2s;
+}
+.prod-note a:hover { border-color: var(--ink); }
+
+/* ── FEATURES ── */
+.fg {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--hairline);
+  border: 1px solid var(--hairline); margin-top: 56px;
+}
+.fb { background: var(--bg); padding: 52px 44px; transition: background 0.2s; }
+.fb:hover { background: #f5f5f5; }
+.fb-ico { font-size: 26px; margin-bottom: 22px; display: block; }
+.fb-nm { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 2px; margin-bottom: 12px; }
+.fb-dc { font-size: 12px; color: var(--mid); line-height: 1.9; }
+
+/* ── STEPS ── */
+.sg {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1px; background: var(--hairline);
+  border: 1px solid var(--hairline); margin-top: 56px;
+}
+.sb { background: var(--bg); padding: 52px 38px; transition: background 0.25s; }
+.sb:hover { background: var(--ink); }
+.sb:hover .sn, .sb:hover .st, .sb:hover .sd { color: var(--bg); }
+.sb:hover .sd { color: rgba(255,255,255,0.4); }
+.sn {
+  font-family: 'Bebas Neue', sans-serif; font-size: 90px;
+  color: var(--faint); line-height: 1; margin-bottom: 20px;
+  transition: color 0.25s;
+}
+.st { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; margin-bottom: 12px; transition: color 0.25s; }
+.sd { font-size: 12px; color: var(--mid); line-height: 1.85; transition: color 0.25s; }
+
+/* ── CTA BAND ── */
+#cta {
+  background: var(--ink); padding: 120px 52px;
+  text-align: center; position: relative; overflow: hidden;
+}
+#cta::before {
+  content: 'VNRL';
+  position: absolute; font-family: 'Bebas Neue', sans-serif;
+  font-size: 340px; color: rgba(255,255,255,0.025);
+  left: 50%; top: 50%; transform: translate(-50%,-50%);
+  letter-spacing: 40px; white-space: nowrap; pointer-events: none;
+}
+.cta-tag { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.28); margin-bottom: 18px; }
+.cta-h {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(56px, 10vw, 130px);
+  color: #fff; letter-spacing: 2px; line-height: 0.92; margin-bottom: 22px;
+}
+.cta-p { font-size: 12px; color: rgba(255,255,255,0.32); margin-bottom: 48px; line-height: 1.9; letter-spacing: 0.5px; }
+.cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.btn-wi {
+  background: #fff; color: var(--ink);
+  padding: 16px 42px; font-family: 'Space Mono', monospace;
+  font-size: 10px; font-weight: 700; letter-spacing: 2.5px;
+  text-transform: uppercase; text-decoration: none;
+  border: 1px solid #fff; transition: all 0.2s;
+}
+.btn-wi:hover { background: transparent; color: #fff; }
+.btn-wo {
+  background: transparent; color: rgba(255,255,255,0.45);
+  padding: 16px 42px; font-family: 'Space Mono', monospace;
+  font-size: 10px; letter-spacing: 2.5px;
+  text-transform: uppercase; text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.15); transition: all 0.2s;
+}
+.btn-wo:hover { color: #fff; border-color: rgba(255,255,255,0.5); }
+
+/* ── FAQ ── */
+.fq-list { margin-top: 56px; }
+.fq-row { border-top: 1px solid var(--hairline); }
+.fq-row:last-child { border-bottom: 1px solid var(--hairline); }
+.fq-q {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 26px 0; font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 2px;
+  cursor: pointer; user-select: none; transition: color 0.2s;
+}
+.fq-q:hover { color: var(--mid); }
+.fq-ic { font-size: 20px; transition: transform 0.25s; flex-shrink: 0; }
+.fq-row.open .fq-ic { transform: rotate(45deg); }
+.fq-a {
+  font-size: 12px; color: var(--mid); line-height: 1.9;
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.32s ease, padding 0.32s;
+}
+.fq-row.open .fq-a { max-height: 220px; padding-bottom: 26px; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--hairline);
+  padding: 36px 52px;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+}
+.foot-logo { font-family: 'Bebas Neue', sans-serif; font-size: 19px; letter-spacing: 6px; }
+.foot-links { display: flex; gap: 28px; list-style: none; }
+.foot-links a { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--mid); text-decoration: none; transition: color 0.2s; }
+.foot-links a:hover { color: var(--ink); }
+.foot-copy { font-size: 10px; color: var(--mid); letter-spacing: 1px; }
+
+/* ── SCROLL BAR ── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--hairline); }
+::-webkit-scrollbar-thumb:hover { background: var(--mid); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1060px) {
+  .prod-grid { grid-template-columns: 1fr 1fr; }
+  .pcard { border-bottom: 1px solid var(--hairline); }
+  .pcard:nth-child(2) { border-right: none; }
+  #hero { grid-template-columns: 1fr; }
+  .hero-r { border-top: 1px solid var(--hairline); }
+  .sg { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 760px) {
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .sec { padding: 64px 20px; }
+  #cta { padding: 80px 20px; }
+  footer { padding: 28px 20px; }
+  .hero-l, .hero-r { padding: 44px 20px; }
+  .prod-grid { grid-template-columns: 1fr; }
+  .pcard { border-right: none !important; }
+  .fg { grid-template-columns: 1fr; }
+  .sg { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">VNRL TWEAKS</a>
+  <ul class="nav-links">
+    <li><a href="#products">Products</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how">Process</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#cta">Contact</a></li>
+  </ul>
+  <a class="nav-btn" href="https://discord.gg/9g9ZVa753v" target="_blank">Join Discord</a>
+</nav>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-l">
+    <span class="hero-tag">Windows Optimization · FPS Boost · PC Tweaking</span>
+    <h1 class="hero-h1">VNRL<br>TWEAKS</h1>
+    <p class="hero-ital">Precision Windows optimization<br>for gamers who don't settle.</p>
+    <div class="hero-rule"></div>
+    <div class="hero-btns">
+      <a class="btn-dark" href="#products">View Products</a>
+      <a class="btn-light" href="https://discord.gg/9g9ZVa753v" target="_blank">Join Discord</a>
+    </div>
+  </div>
+  <div class="hero-r">
+    <p class="hero-r-top">© 2026 Vnrl Tweaks</p>
+    <div class="stats-grid">
+      <div class="stat-cell">
+        <div class="stat-big">4</div>
+        <div class="stat-sm">Products</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-big">FREE</div>
+        <div class="stat-sm">Starter Tier</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-big">24/7</div>
+        <div class="stat-sm">Support</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-big">100%</div>
+        <div class="stat-sm">Discord Delivery</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MARQUEE -->
+<div class="mq-wrap">
+  <div class="mq-track">
+    <span>VNRL TWEAKS</span><span class="dot">·</span>
+    <span>GAMING OPTIMIZATION</span><span class="dot">·</span>
+    <span>WINDOWS TWEAKS</span><span class="dot">·</span>
+    <span>FPS BOOST</span><span class="dot">·</span>
+    <span>DEBLOAT TOOLS</span><span class="dot">·</span>
+    <span>NETWORK TWEAKS</span><span class="dot">·</span>
+    <span>DISCORD DELIVERY</span><span class="dot">·</span>
+    <span>VNRL TWEAKS</span><span class="dot">·</span>
+    <span>GAMING OPTIMIZATION</span><span class="dot">·</span>
+    <span>WINDOWS TWEAKS</span><span class="dot">·</span>
+    <span>FPS BOOST</span><span class="dot">·</span>
+    <span>DEBLOAT TOOLS</span><span class="dot">·</span>
+    <span>NETWORK TWEAKS</span><span class="dot">·</span>
+    <span>DISCORD DELIVERY</span><span class="dot">·</span>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<section class="sec" id="products">
+  <div class="prod-head">
+    <div>
+      <div class="sec-tag">Products</div>
+      <h2 class="sec-h">CHOOSE YOUR<br>PACKAGE</h2>
+    </div>
+    <p class="sec-p">From a free starter panel to a full system overhaul — every product is delivered directly in Discord after payment.</p>
+  </div>
+
+  <div class="prod-grid">
+    <div class="pcard">
+      <div class="pc-num">01</div>
+      <div class="pc-tier">Free Tier</div>
+      <div class="pc-name">Free Optimization</div>
+      <div class="pc-price">FREE</div>
+      <ul class="pf-list">
+        <li class="pf-item"><span class="pf-ck">✓</span> Starter Optimization Panel</li>
+        <li class="pf-item"><span class="pf-ck">✓</span> Basic Windows Tweaks</li>
+        <li class="pf-item"><span class="pf-ck">✓</span> Simple Performance Boost</li>
+        <li class="pf-item"><span class="pf-ck">✓</span> Great For Beginners</li>
+        <li class="pf-item"><span class="pf-ck">✓</span> Discord Access Included</li>
+      </ul>
+      <a class="pbtn" href="https://discord.gg/9g9ZVa753v" target="_blank">Get Free in Discord</a>
+    </div>
+
+    <div class="pcard">
+      <div class="pc-num">02</div>
+      <div class="pc-tier">Premium</div>
+      <div class="pc-name">Premium Utility</div>
+      <div class="pc-price">$15</div>
+      <ul class="pf-list">
+        <li class="pf-item"><span class="pf-ck">✓</span> Advanced Utility Tools</li>
+        <li class="pf-item"><span class="pf-ck">✓</span> Network Optimization</li>
+        <li class="pf-item"><span class="pf-ck">✓</span> System Debloat Module</li>
+        <li class="pf-item"><span class="pf-ck">✓</span> Clean Dashboard UI</li>
+        <li class="pf-item"><span class="pf-ck">✓</span> Discord Support</li>
+      </ul>
+      <a class="pbtn" href="https://discord.gg/9g9ZVa753v" target="_blank">Pay in Discord</a>
+    </div>
+
+    <div class="pcard">
+      <div class="pc-num">03</div>
+      <div class="pc-tier">Core</div>
+      <div class="pc-name">Core Optimization</div>
+      <div class="pc-price">$25</div>
+      <ul class="pf-list">
+        <li class="pf-item"><span class="pf-ck">✓</span> Full Core Tweak Suite</li>
+        <li class="pf-item"><span class="pf-ck">✓</span> GPU & Input Optimizations</li>
+        <li class="pf-item"><span class="pf-ck">✓</span> Advanced Debloat Tools</li>
+        <li class="pf-item"><span class="pf-ck">✓</span> Restore Point System</li>
+        <li class="pf-item"><span class="pf-ck">✓</span> Priority Support</li>
+      </ul>
+      <a class="pbtn" href="https://discord.gg/9g9ZVa753v" target="_blank">Pay in Discord</a>
+    </div>
+
+    <div class="pcard">
+      <div class="pc-num">04</div>
+      <div class="pc-tier">Full Power</div>
+      <div class="pc-name">Full PC Optimization</div>
+      <div class="pc-price">$40</div>
+      <ul class="pf-list">
+        <li class="pf-item"><span class="pf-ck">✓</span> Everything in Core</li>
+        <li class="pf-item"><span class="pf-ck">✓</span> Full System Overhaul</li>
+        <li class="pf-item"><span class="pf-ck">✓</span> Game Booster Module</li>
+        <li class="pf-item"><span class="pf-ck">✓</span> 1-on-1 Discord Session</li>
+        <li class="pf-item"><span class="pf-ck">✓</span> Max FPS & Latency Fixes</li>
+      </ul>
+      <a class="pbtn" href="https://discord.gg/9g9ZVa753v" target="_blank">Pay in Discord</a>
+    </div>
+  </div>
+
+  <p class="prod-note">All products delivered after payment through <a href="https://discord.gg/9g9ZVa753v" target="_blank">Discord</a> · Join the server and open a ticket to get started</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- FEATURES -->
+<section class="sec" id="features">
+  <div class="sec-tag">Features</div>
+  <h2 class="sec-h">BUILT FOR<br>PERFORMANCE</h2>
+  <p class="sec-p">Every Vnrl product is engineered around a single goal — the cleanest, fastest Windows experience possible.</p>
+  <div class="fg">
+    <div class="fb"><span class="fb-ico">⚡</span><div class="fb-nm">Performance Tweaks</div><p class="fb-dc">Power plan adjustments, Windows settings overhaul, process management, and gaming-focused system changes that actually move the needle.</p></div>
+    <div class="fb"><span class="fb-ico">🎮</span><div class="fb-nm">Gaming Setup</div><p class="fb-dc">Built for competitive gamers who need lower input lag, better FPS stability, and a cleaner Windows environment during sessions.</p></div>
+    <div class="fb"><span class="fb-ico">🧹</span><div class="fb-nm">Debloat Tools</div><p class="fb-dc">Strip unnecessary Windows services, startup clutter, and telemetry draining your CPU and memory in the background.</p></div>
+    <div class="fb"><span class="fb-ico">🌐</span><div class="fb-nm">Network Optimization</div><p class="fb-dc">Reduce ping, stabilize packets, and fine-tune your adapter settings specifically for online gaming performance.</p></div>
+    <div class="fb"><span class="fb-ico">🖥️</span><div class="fb-nm">GPU & Input Tweaks</div><p class="fb-dc">Driver-level GPU adjustments, mouse input improvements, and display optimizations for faster, sharper response.</p></div>
+    <div class="fb"><span class="fb-ico">🔒</span><div class="fb-nm">Safe Restore Points</div><p class="fb-dc">Every panel includes built-in restore tools. Apply tweaks with full confidence — revert any change at any time.</p></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- HOW IT WORKS -->
+<section class="sec" id="how">
+  <div class="sec-tag">Process</div>
+  <h2 class="sec-h">HOW IT<br>WORKS</h2>
+  <p class="sec-p">Four simple steps from picking your package to running a fully optimized PC.</p>
+  <div class="sg">
+    <div class="sb">
+      <div class="sn">01</div>
+      <div class="st">Pick A Product</div>
+      <p class="sd">Browse the lineup above and choose the package that fits your goals. Free option available — no payment needed.</p>
+    </div>
+    <div class="sb">
+      <div class="sn">02</div>
+      <div class="st">Join Discord</div>
+      <p class="sd">Click any "Pay in Discord" button to head straight to our server. All orders are handled directly in Discord.</p>
+    </div>
+    <div class="sb">
+      <div class="sn">03</div>
+      <div class="st">Open A Ticket</div>
+      <p class="sd">Open a support ticket, tell us which product you want, and complete your payment securely inside the ticket.</p>
+    </div>
+    <div class="sb">
+      <div class="sn">04</div>
+      <div class="st">Get Delivered</div>
+      <p class="sd">Your product is sent directly in Discord. Launch as administrator and enjoy your optimized setup.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<div id="cta">
+  <div class="cta-tag">Support · Delivery · Community</div>
+  <div class="cta-h">JOIN THE<br>SERVER</div>
+  <p class="cta-p">Get your product, ask questions, and get support.<br>Everything happens inside the Vnrl Tweaks Discord.</p>
+  <div class="cta-btns">
+    <a class="btn-wi" href="https://discord.gg/9g9ZVa753v" target="_blank">Join Discord Now</a>
+    <a class="btn-wo" href="#products">View Products</a>
+  </div>
+</div>
+
+<!-- FAQ -->
+<section class="sec" id="faq">
+  <div class="sec-tag">FAQ</div>
+  <h2 class="sec-h">COMMON<br>QUESTIONS</h2>
+  <div class="fq-list">
+    <div class="fq-row">
+      <div class="fq-q">How do I buy a product? <span class="fq-ic">+</span></div>
+      <div class="fq-a">Join the Discord server, open a support ticket, and tell us which product you want. Payment is handled directly inside the ticket — simple and fast.</div>
+    </div>
+    <div class="fq-row">
+      <div class="fq-q">How do I get the Free Optimization? <span class="fq-ic">+</span></div>
+      <div class="fq-a">Just join the Discord — the free optimization panel is available there at no cost whatsoever. No payment, no hassle.</div>
+    </div>
+    <div class="fq-row">
+      <div class="fq-q">Which package is right for me? <span class="fq-ic">+</span></div>
+      <div class="fq-a">Start with Free Optimization if you're new. Premium Utility suits intermediate users. Core Optimization is ideal for competitive players. Full PC Optimization is the complete package for maximum performance gains.</div>
+    </div>
+    <div class="fq-row">
+      <div class="fq-q">Do I need administrator to run the panels? <span class="fq-ic">+</span></div>
+      <div class="fq-a">Yes — all Windows optimization tools perform best with administrator privileges. Right-click the file and select "Run as administrator" before launching.</div>
+    </div>
+    <div class="fq-row">
+      <div class="fq-q">Is it safe? Can I undo the tweaks? <span class="fq-ic">+</span></div>
+      <div class="fq-a">Every Vnrl package includes restore point tools so you can safely revert any change. Support is always available in the Discord server if you run into anything.</div>
+    </div>
+    <div class="fq-row">
+      <div class="fq-q">How fast is delivery? <span class="fq-ic">+</span></div>
+      <div class="fq-a">Delivery is handled in Discord and is typically very quick. Open a ticket, complete your payment, and you'll receive your product shortly after confirmation.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-logo">VNRL TWEAKS</div>
+  <ul class="foot-links">
+    <li><a href="#products">Products</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how">Process</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="https://discord.gg/9g9ZVa753v" target="_blank">Discord</a></li>
+  </ul>
+  <div class="foot-copy">© 2026 Vnrl Tweaks. All rights reserved.</div>
+</footer>
+
+<script>
+// FAQ accordion
+document.querySelectorAll('.fq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    const row = q.parentElement;
+    const isOpen = row.classList.contains('open');
+    document.querySelectorAll('.fq-row').forEach(r => r.classList.remove('open'));
+    if (!isOpen) row.classList.add('open');
+  });
+});
+
+// Fade-in on scroll
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.pcard, .fb, .sb').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(18px)';
+  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease, background 0.28s';
+  obs.observe(el);
+});
+</script>
+</body>
+</html>
